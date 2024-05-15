@@ -1,11 +1,17 @@
 package app
 
-import (
-	"encoding/xml"
-)
+import "encoding/xml"
 
-// Category adalah struct yang meng-extend Base dan mendukung XML encoding dan decoding.
 type Category struct {
 	Base
-	XMLName xml.Name `xml:"category" json:"-"`
+	XMLName xml.Name `xml:"category"`
+}
+
+func NewCategory(id int, name string) *Category {
+	return &Category{
+		Base: Base{
+			ID:   id,
+			Name: name,
+		},
+	}
 }
