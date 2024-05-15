@@ -4,7 +4,7 @@ import "encoding/xml"
 
 type Product struct {
 	Base
-	XMLName  xml.Name  `xml:"product"`            // XMLName specifies the XML element name for the Product; ignored by JSON.
+	XMLName  xml.Name  `xml:"product"`
 	Price    int64     `json:"price" xml:"price"` // Price of the product.
 	year     int       // year is private and not accessible outside the package.
 	Category *Category `json:"category" xml:"category"` // Category represents a relationship to Category.

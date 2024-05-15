@@ -1,3 +1,4 @@
+// Package main provides a simple REST API for managing products
 package main
 
 import (
@@ -5,21 +6,26 @@ import (
 	"encoding/xml"
 	"io/ioutil"
 	"log"
+
 	"monstercode/app"
 	"net/http"
 )
 
+// main function as entry point
 func main() {
-	http.HandleFunc("/api/v1/products.json", productsJSONHandler)        // JSON endpoint for getting products
-	http.HandleFunc("/api/v1/products.xml", productsXMLHandler)          // XML endpoint for getting products
-	http.HandleFunc("/api/v1/add-products.json", addProductsJSONHandler) // JSON endpoint for adding products
-	http.HandleFunc("/api/v1/add-products.xml", addProductsXMLHandler)   // XML endpoint for adding products
+	http.HandleFunc("/api/v1/products.json", productsJSONHandler)        // handle GET products in JSON format
+	http.HandleFunc("/api/v1/products.xml", productsXMLHandler)          // handle GET products in XML format
+	http.HandleFunc("/api/v1/add-products.json", addProductsJSONHandler) // handle POST products in JSON format
+	http.HandleFunc("/api/v1/add-products.xml", addProductsXMLHandler)   // handle POST products in XML format
 	log.Println("Starting server on :8081")
 	if err := http.ListenAndServe(":8081", nil); err != nil {
 		log.Fatalf("ListenAndServe: %v", err)
 	}
 }
 
+// productsJSONHandler handles GET /api/v1/products.json
+//
+// Handle GET products in JSON format
 func productsJSONHandler(w http.ResponseWriter, r *http.Request) {
 	products := []app.Product{
 		createProduct(1, "Product 1", 50000, 2022),
@@ -30,6 +36,9 @@ func productsJSONHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(products)
 }
 
+// productsXMLHandler handles GET /api/v1/products.xml
+//
+// Handle GET products in XML format
 func productsXMLHandler(w http.ResponseWriter, r *http.Request) {
 	products := []app.Product{
 		createProduct(1, "Product 1", 50000, 2022),
@@ -40,6 +49,9 @@ func productsXMLHandler(w http.ResponseWriter, r *http.Request) {
 	xml.NewEncoder(w).Encode(products)
 }
 
+// addProductsJSONHandler handles POST /api/v1/add-products.json
+//
+// Handle POST products in JSON format
 func addProductsJSONHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
@@ -62,6 +74,9 @@ func addProductsJSONHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(product)
 }
 
+// addProductsXMLHandler handles POST /api/v1/add-products.xml
+//
+// Handle POST products in XML format
 func addProductsXMLHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
@@ -85,6 +100,8 @@ func addProductsXMLHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(product)
 }
 
+// createProduct is a helper function to create products
+//
 // Helper function to create products
 func createProduct(id int, name string, price int64, year int) app.Product {
 	prod := app.Product{
